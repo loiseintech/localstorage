@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="nameInput" placeholder="Name">
+<button onclick="addScore()">Add Random Score</button>
+<table id="scores">
+  <tr><th>Name</th><th>Score</th><th>Action</th></tr>
+</table>
+
+<script>
+let scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+function renderScores() {
+  const table = document.getElementById('scores');
+  const sorted = scores.sort((a,b) => b.score - a.score);
+  table.innerHTML = `<tr><th>Name</th><th>Score</th><th>Action</th></tr>` +
+    sorted.map((score, i) => 
+      `<tr><td>${score.name}</td><td>${score.score}</td>
+       <td><button onclick="deleteScore(${i})">Delete</button></td></tr>`
+    ).join('');
+}
+
+function addScore() {
+  const name = document.getElementById('nameInput').value || 'Anonymous';
+  scores.push({name, score: Math.floor(Math.random() * 1000)});
+  localStorage.setItem('scores', JSON.stringify(scores));
+  renderScores();
+}
+
+function deleteScore(index) {
+  scores.splice(index, 1);
+  localStorage.setItem('scores', JSON.stringify(scores));
+  renderScores();
+}
+
+renderScores();
+</script>
+    </body>
+</html>

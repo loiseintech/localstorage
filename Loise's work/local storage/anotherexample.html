@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <input id="username" placeholder="Enter username">
+  <button onclick="saveName()">Save</button>
+  <p id="greeting"></p>
+  
+  <script>
+    const input = document.getElementById('username');
+    const greeting = document.getElementById('greeting');
+    
+    // Load on page load
+    const savedName = localStorage.getItem('username');
+    if (savedName) {
+      greeting.textContent = `Hello, ${savedName}!`;
+    }
+    
+    function saveName() {
+      const name = input.value;
+      localStorage.setItem('username', name);
+      greeting.textContent = `Hello, ${name}!`;
+    }
+  </script>
+</body>
+</html>

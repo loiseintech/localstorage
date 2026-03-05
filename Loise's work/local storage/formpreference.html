@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <select id="theme"><option>light</option><option>dark</option></select>
+        <label><input type="checkbox" id="notifications"> Notifications</label>
+        <button onclick="savePrefs()">Save Prefs</button>
+
+        <script>
+            ['theme', 'notifications'].forEach(id => {
+            const el = document.getElementById(id);
+            const saved = localStorage.getItem(id);
+                if (saved !== null) el.checked = saved === 'true' || el.value === saved;
+            });
+  
+            function savePrefs() {
+            localStorage.setItem('theme', document.getElementById('theme').value);
+            localStorage.setItem('notifications', document.getElementById('notifications').checked);
+            }
+</script>
+<style>
+  .dark { background: #333; color: #fff; }
+</style>
+
+    </body>
+</html>

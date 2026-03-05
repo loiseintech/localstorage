@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="noteTitle" placeholder="Note title">
+<textarea id="noteContent" placeholder="Note content"></textarea>
+<button onclick="saveNote()">Save Note</button>
+<div id="notes"></div>
+<script>
+  let notes = JSON.parse(localStorage.getItem('notes')) || {};
+  const notesDiv = document.getElementById('notes');
+  
+  function renderNotes() {
+    notesDiv.innerHTML = Object.entries(notes).map(([id, note]) =>
+    `<div><h3>${note.title}</h3><p>${note.content}</p>
+    <button onclick="deleteNote('${id}')">Delete</button></div>`
+    ).join('');
+  }
+  
+  function saveNote() {
+    const id = Date.now().toString();
+    notes[id] = {
+      title: document.getElementById('noteTitle').value,
+      content: document.getElementById('noteContent').value
+    };
+    localStorage.setItem('notes', JSON.stringify(notes));
+    renderNotes();
+  }
+  
+  function deleteNote(id) {
+    delete notes[id];
+    localStorage.setItem('notes', JSON.stringify(notes));
+    renderNotes();
+  }
+  
+  renderNotes();
+</script>
+    </body>
+</html>
