@@ -1,0 +1,19 @@
+<input id="data" placeholder="Enter data">
+<button onclick="saveData()">Save</button>
+<div id="output"></div>
+
+<script>
+function saveData() {
+  const value = document.getElementById('data').value;
+  sessionStorage.setItem('myData', value);  // Auto-clears on tab close
+  showData();
+}
+
+function showData() {
+  const data = sessionStorage.getItem('myData');
+  document.getElementById('output').textContent = 
+    data ? `Saved: ${data}` : 'No data (cleared on tab close)';
+}
+
+showData();
+</script>

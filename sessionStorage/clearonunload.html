@@ -1,0 +1,17 @@
+<button onclick="saveData()">Save Test Data</button>
+<div id="status"></div>
+
+<script>
+function saveData() {
+  localStorage.setItem('sessionData', 'important data');
+  document.getElementById('status').textContent = 'Data saved to localStorage';
+}
+
+window.onbeforeunload = function() {
+  localStorage.removeItem('sessionData');  // Clears on tab close
+};
+
+const data = localStorage.getItem('sessionData');
+document.getElementById('status').textContent = 
+  data ? `Data exists: ${data}` : 'No data found';
+</script>

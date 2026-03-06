@@ -1,0 +1,26 @@
+<button onclick="saveData()">Save Data</button>
+<div id="status"></div>
+
+<script>
+let tabCount = parseInt(localStorage.getItem('tabCount') || '0');
+
+function updateTabCount(change) {
+  tabCount += change;
+  localStorage.setItem('tabCount', tabCount);
+  
+  if (tabCount <= 0) {
+    localStorage.clear();  // Browser close: clear everything
+    localStorage.setItem('tabCount', 0);
+  }
+}
+
+function saveData() {
+  localStorage.setItem('userData', 'my session info');
+  document.getElementById('status').textContent = 
+    `Data saved. Tabs open: ${tabCount}`;
+}
+
+// Track tabs
+window.addEventListener('load', () => updateTabCount(1));
+window.addEventListener('beforeunload', () => updateTabCount(-1));
+</script>

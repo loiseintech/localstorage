@@ -1,0 +1,45 @@
+<input id="note" placeholder="Temporary note">
+<button onclick="saveNote()">Save Note</button>
+<div id="display"></div>
+
+<script>
+const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+
+function saveNote() {
+  const note = document.getElementById('note').value;
+  const data = {
+    value: note,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('tempNote', JSON.stringify(data));
+  showNote();
+}
+
+function isSessionValid(data) {
+  return (Date.now() - data.timestamp) < SESSION_TIMEOUT;
+}
+
+function showNote() {
+  const raw = localStorage.getItem('tempNote');
+  const display = document.getElementById('display');
+  
+  if (raw) {
+    try {
+      const data = JSON.parse(raw);
+      if (isSessionValid(data)) {
+        display.textContent = `Note: ${data.value}`;
+      } else {
+        localStorage.removeItem('tempNote');
+        display.textContent = 'Session expired - data cleared';
+      }
+    } catch(e) {
+      localStorage.removeItem('tempNote');
+      display.textContent = 'Invalid data cleared';
+    }
+  } else {
+    display.textContent = 'No active session';
+  }
+}
+
+showNote();
+</script>

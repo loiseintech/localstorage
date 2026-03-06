@@ -1,0 +1,42 @@
+<input id="task" placeholder="Add task">
+<button onclick="addTask()">Add</button>
+<ul id="todos"></ul>
+
+<script>
+// Hybrid: sessionStorage for current tab, localStorage tab counter
+let todos = JSON.parse(sessionStorage.getItem('todos') || '[]');
+let tabCount = parseInt(localStorage.getItem('tabCount') || '0');
+
+function render() {
+  document.getElementById('todos').innerHTML = 
+    todos.map((task, i) => `<li>${task} <button onclick="remove(${i})">Delete</button></li>`).join('');
+}
+
+function addTask() {
+  const task = document.getElementById('task').value;
+  if (task) {
+    todos.push(task);
+    sessionStorage.setItem('todos', JSON.stringify(todos));
+    document.getElementById('task').value = '';
+    render();
+  }
+}
+
+function remove(i) {
+  todos.splice(i, 1);
+  sessionStorage.setItem('todos', JSON.stringify(todos));
+  render();
+}
+
+// Tab tracking for full browser close
+function updateTabs(change) {
+  tabCount += change;
+  localStorage.setItem('tabCount', tabCount);
+  if (tabCount <= 0) localStorage.clear();
+}
+
+window.addEventListener('load', () => updateTabs(1));
+window.addEventListener('beforeunload', () => updateTabs(-1));
+
+render();
+</script>
